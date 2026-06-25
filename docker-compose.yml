@@ -1,0 +1,19 @@
+services:
+  mongodb:
+    image: mongo:4.4.6
+    #Se usa la version 4.4.6 de mongo debido al requerimiento de soporte de AVX a partir de la version 5.0
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin1234
+    ports:
+      - 27017:27017
+    volumes:
+      - ./mongo_data:/data/db
+
+  mongo-express:
+    image: mongo-express
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_URL: mongodb://admin:admin1234@mongodb:27017/?authSource=admin
+      ME_CONFIG_BASICAUTH: "false"
