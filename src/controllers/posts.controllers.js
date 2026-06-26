@@ -1,4 +1,5 @@
 const Post = require("../models/Post")
+const Comment = require("../models/Comment")
 
 const obtenerPosts = async (req, res) => {
     try {
@@ -25,8 +26,10 @@ const crearPost = async (req, res) => {
 
 const actualizarPost = async (req, res) => {
     try {
-        await req.post.updateOne(req.body, { runValidators: true })
-        res.status(200).json({ message: "Post actualizado correctamente" })
+        const post = req.post
+        post.set(req.body)
+        await post.save()
+        res.status(200).json(post)
     } catch (error) {
         res.status(500).json({ error: "Error al actualizar el post" })
     }
@@ -34,6 +37,7 @@ const actualizarPost = async (req, res) => {
 
 const eliminarPost = async (req, res) => {
     try {
+        await Comment.deleteMany({ post: req.post._id })
         await req.post.deleteOne()
         res.status(200).json({ message: "Post eliminado correctamente" })
     } catch (error) {

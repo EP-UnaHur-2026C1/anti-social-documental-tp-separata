@@ -27,8 +27,10 @@ const crearUsuario = async (req, res) => {
 
 const actualizarUsuario = async (req, res) => {
     try {
-        await req.user.updateOne(req.body, { runValidators: true })
-        res.status(200).json({ message: "Usuario actualizado correctamente" })
+        const user = req.user
+        user.set(req.body)
+        await user.save()
+        res.status(200).json(user)
     } catch (error) {
         if (error.code === 11000) {
             return res.status(400).json({ message: "El nombre de usuario o el correo ya está en uso" })

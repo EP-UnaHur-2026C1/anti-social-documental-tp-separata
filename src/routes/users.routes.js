@@ -3,6 +3,7 @@ const router = Router()
 const usersController = require("../controllers/users.controllers")
 const validarUser = require("../middlewares/user/validarUser")
 const validarUserId = require("../middlewares/user/validarUserId")
+const validarDependenciasDeUser = require("../middlewares/user/validarDependenciasDeUser")
 
 const { obtenerPostsDeUnUser, obtenerPost, crearPost } = require("../controllers/posts.controllers")
 const validarPostEnUser = require("../middlewares/post/validarPostEnUser")
@@ -15,7 +16,7 @@ router.get("/", usersController.obtenerUsuarios)
 router.get("/:id", validarUserId, usersController.obtenerUsuario)
 router.post("/", validarUser, usersController.crearUsuario)
 router.put("/:id", validarUserId, validarUser, usersController.actualizarUsuario)
-router.delete("/:id", validarUserId, usersController.eliminarUsuario)
+router.delete("/:id", validarUserId, validarDependenciasDeUser, usersController.eliminarUsuario)
 
 //  Posts
 router.get("/:id/posts", validarUserId, obtenerPostsDeUnUser)

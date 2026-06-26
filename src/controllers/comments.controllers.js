@@ -25,8 +25,10 @@ const crearComentario = async (req, res) => {
 
 const actualizarComentario = async (req, res) => {
     try {
-        await req.comment.updateOne(req.body, { runValidators: true })
-        res.status(200).json({ message: "Comentario actualizado correctamente" })
+        const comment = req.comment
+        comment.set(req.body)
+        await comment.save()
+        res.status(200).json(comment)
     } catch (error) {
         res.status(500).json({ error: "Error al actualizar el comentario" })
     }

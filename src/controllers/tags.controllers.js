@@ -27,8 +27,10 @@ const crearTag = async (req, res) => {
 
 const actualizarTag = async (req, res) => {
     try {
-        await req.tag.updateOne(req.body, { runValidators: true })
-        res.status(200).json({ message: "Tag actualizada correctamente" })
+        const tag = req.tag
+        tag.set(req.body)
+        await tag.save()
+        res.status(200).json(tag)
     } catch (error) {
         if (error.code === 11000) {
             return res.status(400).json({ message: "El nombre de la tag ya está en uso" })
