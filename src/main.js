@@ -3,13 +3,17 @@ const app = express()
 const dotenv = require("dotenv")
 const PORT = process.env.PORT || 3000
 const conectarDB = require("./config/db")
-dotenv.config()
+const swaggerUi = require("swagger-ui-express")
+const YAML = require("yamljs")
+const swaggerDocument = YAML.load("./swagger.yaml")
 
 const commentRouter = require("./routes/comments.routes")
 const postRouter = require("./routes/posts.routes")
 const tagRouter = require("./routes/tags.routes")
 const userRouter = require("./routes/users.routes")
 
+dotenv.config()
+app.use("/swagger", swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 app.use(express.json())
 conectarDB()
 

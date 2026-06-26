@@ -1,0 +1,559 @@
+openapi: 3.0.0
+info:
+  title: UnaHur Anti-Social Documental Net
+  description: API para red social con publicaciones y comentarios usando MongoDB
+  version: 1.0.0
+servers:
+  - url: "http://localhost:3000"
+
+paths:
+
+  /users:
+    get:
+      summary: Devuelve una lista de todos los usuarios
+      responses:
+        '200':
+          description: Respuesta exitosa
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
+
+    post:
+      summary: Crea un nuevo usuario
+      requestBody:
+        content:
+          application/json:
+            schema:
+                $ref: "#/components/schemas/User"
+      responses:
+        '201':
+          description: Usuario creado correctamente
+        '400':
+          description: El nombre de usuario o el correo ya está en uso
+
+
+  /users/:id:
+    get:
+      summary: Devuelve un usuario por ID
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        '200':
+          description: Respuesta exitosa
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        '404':
+          description: Usuario no encontrado
+
+
+    put:
+      summary: Actualiza a un usuario por ID
+      parameters:
+        - $ref: "#/components/parameters/id"
+      requestBody:
+        content:
+          application/json:
+            schema:
+                $ref: "#/components/schemas/User"
+      responses:
+        '200':
+          description: Respuesta exitosa
+        '400':
+          description: El nombre de usuario o el correo ya está en uso
+        '404':
+          description: Usuario no encontrado
+
+
+    delete:
+      summary: Elimina a un usuario por ID
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        '200':
+          description: Usuario eliminado correctamente
+        '404': 
+          description: Usuario no encontrado
+        '409':
+          description: No se puede eliminar al usuario si todavía tiene posts o comentarios publicados
+
+
+  /users/:id/comments:
+    get:
+      summary: Devuelve todos los comentarios de un usuario
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        '200':
+          description: Respuesta exitosa
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Comment"
+        '404':
+          description: Usuario no encontrado
+  
+
+  /users/:id/posts:
+    get:
+      summary: Devuelve todos los posts de un usuario
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        '200':
+          description: Respuesta exitosa
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Post"
+        '404':
+          description: Usuario no encontrado
+
+    post:
+      summary: Crea un post desde el usuario pasandole su ID 
+      parameters:
+        - $ref: "#/components/parameters/id"
+      requestBody:
+        content:
+          application/json:
+            schema:
+                $ref: "#/components/schemas/ActualizarPost"
+      responses:
+        '201':
+          description: Post creado correctamente
+        '404':
+          description: Usuario no encontrado
+
+
+  /users/:id/posts/:postId:
+    get:
+      summary: Obtiene un post por ID de un usuario
+      parameters:
+        - $ref: "#/components/parameters/id"
+        - $ref: "#/components/parameters/postId"
+      responses:
+        '200':
+          description: Respuesta exitosa
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Post"
+        '404':
+          description: Usuario no encontrado
+
+
+  /users/:id/posts/:postId/comments:
+    post:
+      summary: Crea un comentario desde el usuario pasando por un post
+      parameters:
+        - $ref: "#/components/parameters/id"
+        - $ref: "#/components/parameters/postId"
+      requestBody:
+        content:
+          application/json:
+            schema:
+                $ref: "#/components/schemas/ActualizarComment"
+      responses:
+        '201':
+          description: Comentario creado correctamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Comment"
+        '404':
+          description: Usuario no encontrado
+
+
+  /tags:
+    get:
+      summary: Devuelve una lista de todas las tags
+      responses:
+        '200':
+          description: Respuesta exitosa
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Tag"
+
+    post:
+      summary: Crea una nueva tag
+      requestBody:
+        content:
+          application/json:
+            schema:
+                $ref: "#/components/schemas/Tag"
+      responses:
+        '201':
+          description: Tag creada correctamente
+        '400':
+          description: El nombre de la tag ya está en uso
+
+
+  /tags/:id:
+    get:
+      summary: Devuelve una tag por ID
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        '200':
+          description: Respuesta exitosa
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Tag"
+        '404':
+          description: Tag no encontrada
+
+    put:
+      summary: Actualiza una tag por ID
+      parameters:
+        - $ref: "#/components/parameters/id"
+      requestBody:
+        content:
+          application/json:
+            schema:
+                $ref: "#/components/schemas/Tag"
+      responses:
+        '200':
+          description: Respuesta exitosa
+        '400':
+          description: El nombre de la tag ya está en uso
+        '404':
+          description: Tag no encontrada
+
+    delete:
+      summary: Elimina una tag por ID
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        '200':
+          description: Tag eliminada correctamente
+        '404': 
+          description: Tag no encontrada
+
+
+  /posts:
+    get:
+      summary: Devuelve una lista de todos los posts
+      responses:
+        '200':
+          description: Respuesta exitosa
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Tag"
+
+    post:
+      summary: Crea un nuevo post
+      requestBody:
+        content:
+          application/json:
+            schema:
+                $ref: "#/components/schemas/Post"
+      responses:
+        '201':
+          description: Post creado correctamente
+
+
+  /posts/:id:
+    get:
+      summary: Devuelve un post por ID
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        '200':
+          description: Respuesta exitosa
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Post"
+        '404':
+          description: Post no encontrado
+
+    put:
+      summary: Actualiza un post por ID
+      parameters:
+        - $ref: "#/components/parameters/id"
+      requestBody:
+        content:
+          application/json:
+            schema:
+                $ref: "#/components/schemas/ActualizarPost"
+      responses:
+        '200':
+          description: Respuesta exitosa
+        '404':
+          description: Post no encontrado
+
+    delete:
+      summary: Elimina un post por ID
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        '200':
+          description: Post eliminado correctamente
+        '404': 
+          description: Post no encontrado
+
+
+  /posts/:id/comments:
+    get:
+      summary: Obtiene los comentarios de un post
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        '200':
+          description: Respuesta exitosa
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Comment"
+        '404':
+          description: Post no encontrado
+
+
+  /posts/:id/comments/commentId:
+    get:
+      summary: Obtiene un comentario por ID de un post
+      parameters:
+        - $ref: "#/components/parameters/id"
+        - $ref: "#/components/parameters/commentId"
+      responses:
+        '200':
+          description: Respuesta exitosa
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Comment"
+        '404':
+          description: Post no encontrado
+
+
+  /posts/:id/images:
+    post:
+      summary: Crea una asociación de un post con una image
+      parameters:
+        - $ref: "#/components/parameters/id"
+      requestBody:
+        content:
+          application/json:
+            schema:
+                $ref: "#/components/schemas/PostImage"
+      responses:
+        '201':
+          description: Asociación creada correctamente
+        '404':
+          description: Post no encontrado
+
+
+  /posts/:id/images/imageId:
+    delete:
+      summary: Elimina una asociación de un post con una image
+      parameters:
+        - $ref: "#/components/parameters/id"
+        - $ref: "#/components/parameters/imageId"
+      responses:
+        '200':
+          description: Asociación eliminada correctamente
+        '404':
+          description: Post no encontrado
+
+  
+  /posts/:id/tags/tagId:
+    post:
+      summary: Crea una asociación de un post con una tag
+      parameters:
+        - $ref: "#/components/parameters/id"
+        - $ref: "#/components/parameters/tagId"
+      responses:
+        '201':
+          description: Asociación creada correctamente
+        '404':
+          description: Post no encontrado
+
+    delete:
+      summary: Elimina una asociación de un post con una tag
+      responses:
+        '200':
+          description: Asociación eliminada correctamente
+        '404':
+          description: Post no encontrado
+
+
+  /comments:
+    get:
+      summary: Devuelve una lista de todos los comentarios
+      requestBody:
+        content:
+          application/json:
+            schema:
+                $ref: "#/components/schemas/Comment"
+      responses:
+        '200':
+          description: Respuesta exitosa
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Comment"
+
+    post:
+      summary: Crea un nuevo comentario
+      responses:
+        '201':
+          description: Comentario creado correctamente
+
+
+  /comments/:id:
+    get:
+      summary: Devuelve un comentario por ID
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        '200':
+          description: Respuesta exitosa
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Comment"
+        '404':
+          description: Comentario no encontrado
+
+    put:
+      summary: Actualiza un comentario por ID
+      parameters:
+        - $ref: "#/components/parameters/id"
+      requestBody:
+        content:
+          application/json:
+            schema:
+                $ref: "#/components/schemas/ActualizarComment"
+      responses:
+        '200':
+          description: Respuesta exitosa
+        '404':
+          description: Comentario no encontrado
+
+    delete:
+      summary: Elimina un comentario por ID
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        '200':
+          description: Comentario eliminado correctamente
+        '404': 
+          description: Comentario no encontrado
+
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        nickName:
+          type: string
+        mail:
+          type: string
+        user:
+          type: string
+
+    Tag:
+      type: object
+      properties:
+        nombre:
+          type: string
+
+    Post:
+      type: object
+      properties:
+        descripcion:
+          type: string
+        user:
+          type: string
+        images:
+          type: array
+          items:
+            type: string
+
+    Comment:
+      type: object
+      properties:
+        descripcion:
+          type: string
+        post:
+          type: string
+        user:
+          type: string
+
+    PostImage:
+      type: object
+      properties:
+        url:
+          type: string
+
+    ActualizarPost:
+      type: object
+      properties:
+        descripcion:
+          type: string
+
+    ActualizarComment:
+      type: object
+      properties:
+        descripcion:
+          type: string
+
+
+
+  parameters:
+    id:
+      in: path
+      name: id
+      schema:
+        type: integer
+      required: true
+
+    postId:
+      in: path
+      name: postId
+      schema:
+        type: integer
+      required: true
+
+    tagId:
+      in: path
+      name: tagId
+      schema:
+        type: integer
+      required: true
+
+    imageId:
+      in: path
+      name: imageId
+      schema:
+        type: integer
+      required: true
+
+    commentId:
+      in: path
+      name: commentId
+      schema:
+        type: integer
+      required: true
