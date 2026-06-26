@@ -1,4 +1,5 @@
 const Comment = require("../models/Comment")
+const MESES = parseInt(process.env.MESES, 10)
 
 const obtenerComentarios = async (req, res) => {
     try {
@@ -40,10 +41,34 @@ const eliminarComentario = async (req, res) => {
     }
 }
 
+const obtenerComentariosDeUnPost = async (req, res) => {
+    try {
+        const limite = new Date()
+        limite.setMonth(limite.getMonth() - MESES)
+        const comments = await Comment.find({ post: req.params.id, createdAt: { $gt: limite } })
+            .populate("user", "nickName -_id").select("-updatedAt -__v")
+        res.status(200).json(comments)
+    } catch (error) {
+        res.status(500).json({ error: "Error al obtener los comentarios" })
+    }
+}
+
+const obtenerComentariosDeUnUser = async (req, res) => {
+    try {
+        const comments = await Comment.find({ user: req.params.id })
+            .populate("user", "nickName -_id").select("-updatedAt -__v")
+        res.status(200).json(comments)
+    } catch (error) {
+        res.status(500).json({ error: "Error al obtener los comentarios" })
+    }
+}
+
 module.exports = {
     obtenerComentarios,
     obtenerComentario,
     crearComentario,
     actualizarComentario,
     eliminarComentario,
+    obtenerComentariosDeUnPost,
+    obtenerComentariosDeUnUser
 }

@@ -16,10 +16,10 @@ const validarCommentDatos = (req, res, next) => {
         return res.status(400).json({ error: error.details[0].message })
     }
     if (req.post) {
-        req.body.postId = req.post.id
+        req.body.post = req.params.postId
     }
     if (req.user) {
-        req.body.userId = req.user.id
+        req.body.user = req.params.id
     }
     next()
 }

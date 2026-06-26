@@ -25,4 +25,12 @@ const postActualizarSchema = Joi.object({
     })
 })
 
-module.exports = { postSchema, postActualizarSchema }
+const postImageSchema = Joi.object({
+    url: Joi.string().uri().required().messages({
+        "string.base": "La url debe ser un string",
+        "string.uri": "El string debe ser una url valida",
+        "any.required": "La url es obligatoria"
+    }),
+})
+
+module.exports = { postSchema, postActualizarSchema, postImageSchema }

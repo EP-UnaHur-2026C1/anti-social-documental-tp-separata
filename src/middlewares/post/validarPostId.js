@@ -4,7 +4,7 @@ const validarPostIdConEntidades = async (req, res, next) => {
     try {
         const { id } = req.params
         const post = await Post.findById(id).populate("user", "nickName -_id")
-            .populate("tags", "nombre -_id").select("-createdAt -updatedAt -__v")
+            .populate("tags", "nombre -_id").select("-updatedAt -__v")
         if (!post) {
             return res.status(404).json({ message: "Post no encontrado" })
         }
@@ -17,7 +17,7 @@ const validarPostIdConEntidades = async (req, res, next) => {
 
 const validarPostId = async (req, res, next) => {
     try {
-        const id = (req.postId || req.params.id)
+        const id = (req.params.postId || req.params.id)
         const post = await Post.findById(id)
         if (!post) {
             return res.status(404).json({ message: "Post no encontrado" })

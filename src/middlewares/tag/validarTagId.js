@@ -1,8 +1,8 @@
 const Tag = require("../../models/Tag")
 
-const validarTagId = async (req, res , next) => {
+const validarTagId = async (req, res, next) => {
     try {
-        const { id } = req.params
+        const id = (req.params.tagId || req.params.id)
         const tag = await Tag.findById(id).select("-createdAt -updatedAt -__v")
         if (!tag) {
             res.status(404).json({ message: "Tag no encontrada" })
