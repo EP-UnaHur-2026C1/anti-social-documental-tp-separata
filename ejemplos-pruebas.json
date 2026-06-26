@@ -1,0 +1,96 @@
+{
+    "Crear User": [
+        {
+            "nickName": "Separata",
+            "mail": "unmail@gmail.com",
+            "password": "contra123"
+        },
+        {
+            "nickName": "Starosta",
+            "mail": "example@gmail.com",
+            "password": "obertura777"
+        }
+    ],
+
+    "Actualizar User": [
+        {
+            "nickName": "Separata",
+            "mail": "mailnuevo@gmail.com",
+            "password": "cosmigonon"
+        }
+    ],
+
+    "Crear Post desde User": [
+        {
+            "descripcion": "Ejemplo de post creado desde el user"
+        },
+        {
+            "descripcion": "Ejemplo de un post con imagenes desde user",
+            "images": [{"url": "https://picsum.photos/700/1000"}, {"url": "https://picsum.photos/300/600"}]
+        }
+    ],
+
+    "Crear Comment desde User": [
+        {
+            "descripcion": "Ejemplo de un comentario creado desde user"
+        }
+    ],
+
+    "Crear Tag": [
+        {
+            "nombre": "Informática"
+        },
+        {
+            "nombre": "Salud"
+        }
+    ],
+    
+    "Actualizar Tag": [
+        {
+            "nombre": "Tecnología"
+        }
+    ],
+    
+    "Crear Post": [
+        {
+            "descripcion": "Ejemplo de un primer post",
+            "user": "Id a reemplazar del primer User"
+        },
+        {
+            "descripcion": "Un nuevo post del mismo usuario con images",
+            "user": "Id a reemplazar del primer User",
+            "images": [{"url":"https://picsum.photos/1000"}, {"url": "https://picsum.photos/755/500"}]
+        }
+    ],
+
+    "Actualizar Post": [
+        {
+            "descripcion": "El contenido del post está editado"
+        }
+    ],
+
+    "Agregar Imagen a un Post": [
+        {
+            "url": "https://picsum.photos/500"
+        }
+    ],
+
+    "Crear Comment": [
+        {
+            "descripcion": "Un comentario de otro usuario en el post",
+            "post": "Id a reemplazar del primer Post",
+            "user": "Id a reemplazar del segundo User"
+        },
+        {
+            "descripcion": "Comentario de ejemplo del autor del post",
+            "post": "Id a reemplazar del primer Post",
+            "user": "Id a reemplazar del primer User"
+        }
+    ],
+
+    "Actualizar Comment": [
+        {
+            "descripcion": "Comentario con su contenido editado"
+        }
+    ]
+}

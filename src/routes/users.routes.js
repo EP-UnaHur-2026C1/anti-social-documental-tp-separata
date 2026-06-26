@@ -7,7 +7,7 @@ const validarDependenciasDeUser = require("../middlewares/user/validarDependenci
 
 const { obtenerPostsDeUnUser, obtenerPost, crearPost } = require("../controllers/posts.controllers")
 const validarPostEnUser = require("../middlewares/post/validarPostEnUser")
-const { validarPostDatos } = require("../middlewares/post/validarPost")
+const { validarPost } = require("../middlewares/post/validarPost")
 const { validarPostId } = require("../middlewares/post/validarPostId")
 const { obtenerComentariosDeUnUser, crearComentario } = require("../controllers/comments.controllers")
 const { validarCommentDatos } = require("../middlewares/comment/validarComment")
@@ -21,7 +21,7 @@ router.delete("/:id", validarUserId, validarDependenciasDeUser, usersController.
 //  Posts
 router.get("/:id/posts", validarUserId, obtenerPostsDeUnUser)
 router.get("/:id/posts/:postId", validarUserId, validarPostEnUser, obtenerPost)
-router.post("/:id/posts/", validarUserId, validarPostDatos, crearPost)
+router.post("/:id/posts/", validarUserId, validarPost, crearPost)
 
 //  Comments
 router.get("/:id/comments", validarUserId, obtenerComentariosDeUnUser)
